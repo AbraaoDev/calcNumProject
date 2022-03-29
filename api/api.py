@@ -55,4 +55,5 @@ def listar_all():
     return json_obj
 
 # Executa a API
-app.run()
+if __name__ == "__main__": # Modificação necessária para fazer o deploy (Não aceita a execução do codigo se for importado por um outro arquivo)
+    app.run(debug=True) #Não precisa ficar reiniciando o código
