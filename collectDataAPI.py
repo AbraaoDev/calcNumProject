@@ -4,7 +4,7 @@ import requests
 import mysql.connector
 
  #Caso não haja API, MirageJS para uma fake api
-response = requests.get("") # <- Alimentação
+response = requests.get("https://apibolanarede3.herokuapp.com/listar_all") # <- Alimentação
 #req
 print(response.status_code) 
 #return API
@@ -12,8 +12,8 @@ print(response.content)
  #serializa
 dados = json.loads(response.content)
 
-for "api" in dados: #passa pelo JSON
-    print("api")  #inserir variável de cada jogador 
+for listar_all in dados: #passa pelo JSON
+    print(listar_all)  #inserir variável de cada jogador 
 
 
 
