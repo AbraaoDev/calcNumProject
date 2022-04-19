@@ -49,12 +49,8 @@ def listar_all():
     json_obj = json.dumps(stud_obj) # Converte um objeto Python em uma str JSON
     print(type(json_obj))
 
-
-    #? Não consigo ver como um arquivo JSON no navegador, mesmo após instalar a extensão
-    # print(type(json.dumps(df_dict)))
     return json_obj
 
 # Executa a API
-# if __name__ == "__main__": # Modificação necessária para fazer o deploy (Não aceita a execução do codigo se for importado por um outro arquivo)
-
-app.run(debug=True) #Não precisa ficar reiniciando o código
+if __name__ == "__main__": # Modificação necessária para fazer o deploy (Não aceita a execução do codigo se for importado por um outro arquivo)
+    app.run(debug=True) #Não precisa ficar reiniciando o código
