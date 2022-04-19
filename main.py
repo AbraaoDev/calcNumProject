@@ -1,6 +1,4 @@
-# Arquivo principal
-# Conecta ao banco de dados e coleta os registros
-# Realiza os cálculos necessários para a harmonização dos times através dos registros
+# Arquivo principal responsável pela Harmonização
 # ! Ainda é necessário testar a conexão
 
 import mysql.connector
@@ -24,6 +22,7 @@ def calc_imc_medio(lista_imcs):
     imc_medio = sum(lista_imcs) / len(lista_imcs)
     return imc_medio
 
+# Cálculo da Taxa Metabólica Basal
 def calc_tmb(idade, m, h):
     # equação proveniente do 'artigo 1' enviado pelo professor
     tmb = -0.1631 - 0.00255 * idade + 0.4721 * ln(m) + 0.2952 * ln(h)
@@ -43,6 +42,7 @@ try:
     )
 
     # SELECIONE os dados das colunas, DA TABELA de jogadores ONDE ...
+    # É necessário editar o QUERY
     query = "SELECT column FROM tb_player WHERE" # query para selecionar os times
 
     cursor = connection.cursor()
