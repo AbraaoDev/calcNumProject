@@ -1,11 +1,13 @@
+----------------------------------------------------------------------------------------
+Anotações de fórmulas e cálculos de variáveis durante a aula:
+----------------------------------------------------------------------------------------
 m_med = media(m_j), j =1,...,nj
 IMC_med = media(IMC_j), j =1,...,nj
 f(h_j) = m_j/h_j**2 - IMC_j
-
 altura media
 f(h_med) = m_med/h_med**2 - IMC_med
 
-massa_media
+>> massa_media
 imc_j -> imc de cada jogador
 imc_j = m_j / h_j ** 2
 m_j = imc_j * h_j**2
@@ -16,25 +18,24 @@ abs(m_j - m_med) = IMC_j*(h_j - h_med)**2
 
 m_j =  m_med + IMC_j*(h_j - h_med)**2
 
-taxa metabolica por jogador
+>> taxa metabolica por jogador
 TMB_j = 10m_j + 6.25h_j - 5idade_j + 5
 
-desconta a altura do jogador
+>> desconta a altura do jogador
 TMB_j = 10m_j + 6.25abs(h_j - h_med) - 5idade_j + 5
       = 10(m_j -m_med) + 6.25abs(h_j - h_med) - 5idade_j + 5
 
-Harmonização
+>> Harmonização
 TMB_total = TMB_med + soma(TMB_j)
 
-Medias das calorias
+>> Medias das calorias
 calorias gastas + os excessos
 soma(cal) = media(cal) + m_j(cal)
 
 https://gcpeixoto.github.io/METCOMP/lab-gabs/lab-04-gab.html?highlight=caloria
 https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0103483.g004
 
-consumo calórico 'idêntico'
-
+-> consumo calórico 'idêntico'
 
 Aplicar método de Newton ou Bissecção
 - Ter uma linearidade na função, encontrar h_med
@@ -55,12 +56,11 @@ WH + IMC = X
 (h, WH)
 (h,IMC)
 IMC = WH
---------------------------------------------
+----------------------------------------------------------------------------------------
 Determinação de raízes em h
 m/h**2 - IMC = f(h)
 
-
----------------------------------------------
+----------------------------------------------------------------------------------------
 NOVO OBJETIVO DO PROJETO
 - filtrar por posição, variar entre times -> montar o melhor time
     - fixar um valor para o IMC
@@ -79,8 +79,7 @@ NOVO OBJETIVO DO PROJETO
 - equilibrar parâmetros
 - garantir que consumam a qtd_calorias próximas
 
-
-
+----------------------------------------------------------------------------------------
 EQUAÇÕES QUE TALVEZ SEJAM DESCARTADAS DO PROJETO
 # Calcula a massa de um jogador, dado o seu IMC e sua altura
  def massa_media(imc, h):
@@ -104,3 +103,10 @@ EQUAÇÕES QUE TALVEZ SEJAM DESCARTADAS DO PROJETO
      elif (idade >= 31 and idade <=40): 
          gc = (0.048 * m + 3.653) * 239
          return gc
+
+----------------------------------------------------------------------------------------
+OBSERVAÇÕES DO PROFESSOR, NOVO OBJETIVO DO PROJETO
+. Leiam as notas: tem que resolver 2 problemas de determinação de raízes. Para h0 e h1.
+. Artigos (verifique apenas os highlights) para o cálculo calórico. É necessário usar a equação de Cole por ser não linear. 
+Note que ela usa a idade. Se não tiver, tem que achar a idade média. 
+. Não resolvi. Tem que ver se vai dar certo.
