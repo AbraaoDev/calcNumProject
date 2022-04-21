@@ -16,6 +16,7 @@ def calc_imc(m, h):
     else: 
         return "IMC não saudavel"
 
+# Calcula o IMC médio com base nos IMCs do jogadores de um grupo (Defesa, Ataque ou Meio-Campo)
 def calc_imc_medio(lista_imcs):
     y = sum(lista_imcs) / len(lista_imcs)
     return y
@@ -53,6 +54,15 @@ def calc_tmb(idade, m, h):
     return tmb
 
 try:
+    posicao_campo = 0
+    while(posicao_campo != "ataque" or posicao_campo != "defesa" or posicao_campo != "meio-campo"):
+        posição_campo = input("Informe o grupo a se montar o time perfeito: ")
+        
+        if(posicao_campo == "ataque" or posicao_campo == "defesa" or posicao_campo == "meio-campo"):
+            print(f"Posições de campo válida, vamos montar o time perfeito com base nos jogadores na posição de {posicao_campo}.")
+        else:
+            print("Posição de campo inválida, tente novamente.")
+
     # tenta estabelecer a conexão com o bando de dados
     connection = mysql.connector.connect(
         host='localhost',
