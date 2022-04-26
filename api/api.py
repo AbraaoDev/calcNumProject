@@ -39,6 +39,19 @@ def teste():
 @app.route('/listar_all', methods=['GET'])
 def listar_all():
     df = pd.read_csv('BrasileiraoSerieA.csv')
+
+    # Tratamento de valores nulos
+    # Insere valores médios referente a coluna em que se encontra o valor nulo
+    peso_medio = df['PESO'].mean()
+    peso_medio = round(peso_medio, 2)
+    df.update(df['PESO'].fillna(peso_medio))
+
+    altura_media = df['ALTURA'].mean()
+    altura_media = round(altura_media,2)
+    df.update(df['ALTURA'].fillna(altura_media))
+
+    # IDADE
+
     df_dict = df.to_dict(orient='records') # ordena o dataframe por linhas
     # print(f"O tipo de dado é: {type(df_dict)}") # == lista
 
