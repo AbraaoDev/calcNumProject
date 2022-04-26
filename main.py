@@ -1,6 +1,30 @@
-import mysql.connector
+# import mysql.connector
 import matplotlib.pyplot as plt
 from numpy import log as ln
+
+import json
+
+# ------------------------------------- ETAPA 0 (armazenando em listas)
+def armazenar_em_lista(data_list):
+    # Armazena as alturas, peso, e idades de todos os jogadores
+    # Listas de atributos e nomes criadas, caso venha a necessitar associar os nomes aos atributos dos jogadores
+    lista_alturas = []
+    lista_alturas_nomes = []
+    lista_pesos = []
+    lista_pesos_nomes = []
+    lista_idades = []
+    lista_idades_nomes = []
+
+    for i in data_list:
+        for key, value in i.items():
+            if key == 'ALTURA':
+                lista_alturas.append(value)
+            elif key == 'PESO':
+                lista_pesos.append(value)
+            elif key == 'IDADE':
+                pass
+    print("Tudo foi armazenado :)")
+    return lista_alturas, lista_pesos, lista_idades
 
 # ------------------------------------- ETAPA 1
 # Calcula o IMC de cada jogador
@@ -53,43 +77,34 @@ def calc_tmb(idade, m, h):
     tmb = -0.1631 - 0.00255 * idade + 0.4721 * ln(m) + 0.2952 * ln(h)
     return tmb
 
-try:
-    posicao_campo = 0
-    while(posicao_campo != "ataque" or posicao_campo != "defesa" or posicao_campo != "meio-campo"):
-        posição_campo = input("Informe o grupo a se montar o time perfeito: ")
-        
-        if(posicao_campo == "ataque" or posicao_campo == "defesa" or posicao_campo == "meio-campo"):
-            print(f"Posições de campo válida, vamos montar o time perfeito com base nos jogadores na posição de {posicao_campo}.")
-        else:
-            print("Posição de campo inválida, tente novamente.")
+# Início do programa, só vai abrir o arquivo quando sair deste loop
+posicao = ""
+while(posicao != "ATACANTE" or posicao != "DEFENSOR" or posicao != "MEIO-CAMPO"):
+    posicao = input("Informe a posicação do jogador(ATACANTE, DEFENSOR ou MEIO-CAMPO):")
+    if (posicao == "ATACANTE" or posicao == "DEFENSOR" or posicao == "MEIO-CAMPO"):
+        print("Posição de campo válida.")
+        break
+    else:
+        print("Posição de campo inválida, tente novamente.")
 
-    # tenta estabelecer a conexão com o bando de dados
-    connection = mysql.connector.connect(
-        host='localhost',
-        user='root',
-        password='equipe3', 
-        database='randomDB'
-    )
+# abre o arquivo json referente a posição do jogador
+if (posicao == "ATACANTE"):
+    print("Vamos montar o time perfeito de atacantes.")
+    f_atacantes = open("atacantes.json")
+    data_list_atacantes = json.load(f_atacantes)
 
-    # SELECIONE os dados das colunas, DA TABELA de jogadores ONDE ...
-    # É necessário editar o QUERY
-    query = "SELECT column FROM tb_player WHERE" # query para selecionar os times
+    armazenar_em_lista(data_list_atacantes)
 
-    cursor = connection.cursor()
-    cursor.execute()
+elif (posicao == "DEFENSOR"):
+    print("Vamos montar o time perfeito de defensores.")
+    f_defensores = open("defensores.json")
+    data_list_defensores = json.load(f_defensores)
 
-    records = cursor.fetchall()
+    armazenar_em_lista(data_list_defensores)
 
-    # Para cada linha nos registros...
-    for row in records:
-        pass
-        # chama as funções aqui
+else:
+    print("Vamos montar o time perfeito de meio-campistas.")
+    f_meiocampos = open("meiocampos.json")
+    data_list_meiocampos = json.load(f_meiocampos)
 
-except mysql.connector.Error as e:
-    print("Erro ao ler dados da tabela ", e)
-
-finally:
-    if connection.is_connected():
-        connection.close()
-        cursor.close()
-        print("Conexão encerrada.")
+    armazenar_em_lista(data_list_meiocampos)
