@@ -33,7 +33,9 @@ def listar_all():
     altura_media = round(altura_media,2)
     df.update(df['ALTURA'].fillna(altura_media))
 
-    # !IDADE
+    idade_media = df['IDADE'].mean()
+    idade_media = round(idade_media)
+    df.update(df['IDADE'].fillna(idade_media))
 
     # Cria um database para cada posição e cria um arquivo .json com base no dataframe
     df_atacante = df.loc[df['POSICAO']=="ATACANTE"]
