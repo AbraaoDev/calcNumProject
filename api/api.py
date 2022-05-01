@@ -42,34 +42,34 @@ def listar_all():
     json_str_atacante = df_atacante.to_json(orient="records")
     json_obj_atacante = json.loads(json_str_atacante)
     json_obj_atacante = json.dumps(json_obj_atacante)
-    with open("../atacantes.json", "w") as outfile:
+    with open("../json/atacantes.json", "w") as outfile:
         outfile.write(json_obj_atacante)
 
     df_defensor = df.loc[df['POSICAO']=="DEFENSOR"]
     json_str_defensor = df_defensor.to_json(orient="records")
     json_obj_defensor = json.loads(json_str_defensor)
     json_obj_defensor = json.dumps(json_obj_defensor)
-    with open("../defensores.json", "w") as outfile:
+    with open("../json/defensores.json", "w") as outfile:
         outfile.write(json_obj_defensor)
 
     df_meiocampo = df.loc[df['POSICAO']=="MEIO-CAMPO"]
     json_str_meiocampo = df_meiocampo.to_json(orient="records")
     json_obj_meiocampo = json.loads(json_str_meiocampo)
     json_obj_meiocampo = json.dumps(json_obj_meiocampo)
-    with open("../meiocampos.json", "w") as outfile:
+    with open("../json/meiocampos.json", "w") as outfile:
         outfile.write(json_obj_meiocampo)
 
     df_goleiro = df.loc[df['POSICAO']=="GOLEIRO"]
     json_str_goleiro = df_goleiro.to_json(orient="records")
     json_obj_goleiro = json.loads(json_str_goleiro)
     json_obj_goleiro = json.dumps(json_obj_goleiro)
-    with open("../goleiros.json", "w") as outfile:
+    with open("../json/goleiros.json", "w") as outfile:
         outfile.write(json_obj_meiocampo)
 
     json_str = df.to_json(orient='records') # ordena o dataframe por linhas
     json_obj = json.loads(json_str) # Passa uma string JSON válida e converte para um dicionário Python
     json_obj = json.dumps(json_obj) # Converte um objeto Python em uma str JSON
-    with open("../jogadores.json", "w") as outfile:
+    with open("../json/jogadores.json", "w") as outfile:
         outfile.write(json_obj)
 
     return json_obj
