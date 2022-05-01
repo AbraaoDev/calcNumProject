@@ -7,12 +7,10 @@ import json
 def armazenar_em_lista(data_list):
     # Armazena as alturas, peso, e idades de todos os jogadores
     # Listas de atributos e nomes criadas, caso venha a necessitar associar os nomes aos atributos dos jogadores
-    lista_alturas = []
-    lista_alturas_nomes = []
-    lista_pesos = []
-    lista_pesos_nomes = []
-    lista_idades = []
-    lista_idades_nomes = []
+    lista_alturas = [] #0
+    lista_pesos = [] #1
+    lista_idades = [] #2
+    lista_nomes = [] #3
 
     for i in data_list:
         for key, value in i.items():
@@ -21,8 +19,12 @@ def armazenar_em_lista(data_list):
             elif key == 'PESO':
                 lista_pesos.append(value)
             elif key == 'IDADE':
-                pass
-    return lista_alturas, lista_pesos, lista_idades
+                print("acheiii idade")
+                lista_idades.append(value)
+            elif key == 'NOME':
+                # print("acheiii nome")
+                lista_nomes.append(value)
+    return lista_alturas, lista_pesos, lista_idades, lista_nomes
 
 # ------------------------------------- ETAPA 1 (Cálculo de IMCs e valores médios)
 def calc_imc(m, h):
@@ -99,22 +101,47 @@ f_goleiro = open("json/goleiros.json")
 data_list_goleiros = json.load(f_goleiro)
 
 # Armazena em uma lista todos os atributos dos jogadores
+print(data_list[1])
 listas = armazenar_em_lista(data_list)
 lista_alturas = listas[0]
 lista_pesos = listas[1]
 lista_idades = listas[2]
+lista_nomes = listas[3]
+
+print(len(lista_alturas))
+print(len(lista_idades))
 
 listas_goleiros = armazenar_em_lista(data_list_goleiros)
 lista_alturas_g = listas_goleiros[0]
 lista_pesos_g = listas_goleiros[1]
 lista_idades_g = listas_goleiros[2]
 
+# Para armazenar os dados dos jogadores
+time = []
+nomes_e_dados = [] #nomes_e_dados = [nome, [dados]]
+dados = []
+
+# Para a montagem do time perfeito
+time_perfeito = []
+tp_dados = []
+tp_nome_e_dados = []
+
 # ------------------- 1
 # Referente a uma das posições informadas pelo usuário: ATACANTE, DEFENSOR e MEIO-CAMPO
 imcs = []
 for i in range(len(data_list)):
     imc_atual = calc_imc(lista_pesos[i], lista_alturas[i])
+    if(imc_atual != "IMC não saudavel"):
+        # Irá armazenar dados na matriz, caso haja retorno de IMC saudável
+        dados.append(lista_alturas[i])
+        dados.append(lista_pesos[i])
+        dados.append(lista_idades[i])
+        dados.append(imc_atual)
+        nomes_e_dados.append(lista_nomes[i])
+        nomes_e_dados.append(dados)
+    
     imcs.append(imc_atual)
+print(nomes_e_dados[0])
 
 # Referente a posição de GOLEIRO
 # ****** É necessário realizar os mesmo procedimentos para os goleiros!
