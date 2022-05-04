@@ -30,11 +30,7 @@ def calc_imc(m, h):
     # até 4 casas decimais
     imc = round(imc, 4)
 
-    # retorna apenas os IMCs considerados saudáveis
-    if (imc >= 18.5 and imc <= 25):
-        return imc
-    else: 
-        return "IMC não saudavel"
+    return imc
 
 def calc_imc_medio(lista_imcs):
     y = sum(lista_imcs) / len(lista_imcs)
@@ -98,6 +94,7 @@ f_goleiro = open("json/goleiros.json")
 data_list_goleiros = json.load(f_goleiro)
 
 # Armazena em uma lista todos os atributos dos jogadores
+# listas = [[], [], [], []]
 listas = armazenar_em_lista(data_list)
 lista_alturas = listas[0]
 lista_pesos = listas[1]
@@ -111,41 +108,52 @@ lista_idades_g = listas_goleiros[2]
 lista_nomes_g = listas_goleiros[3]
 
 # Para armazenar os dados dos jogadores
+# nome_e_dados = [nome, [m,h,i,imc]]
 time = []
-
-# Para a montagem do time perfeito
-#! lembre de implementar isto
-time_perfeito = []
-tp_dados = []
-tp_nome_e_dados = []
 
 # ------------------- 1
 # Referente a uma das posições informadas pelo usuário: ATACANTE, DEFENSOR e MEIO-CAMPO
 imcs = []
 for i in range(len(data_list)):
+    # 0 0 
     imc_atual = calc_imc(lista_pesos[i], lista_alturas[i])
-    if(imc_atual != "IMC não saudavel"):
-        # Irá armazenar dados na matriz, caso haja retorno de IMC saudável
-        # O nome sempre fica armazenado na posição 0 e os demais dados (no formato de lista) na posição 1
-        nomes_e_dados = [lista_nomes[i], []] 
-        nomes_e_dados[1].append(lista_alturas[i])
-        nomes_e_dados[1].append(lista_pesos[i])
-        nomes_e_dados[1].append(lista_idades[i])
-        nomes_e_dados[1].append(imc_atual)
-    
-    imcs.append(imc_atual)
+    nomes_e_dados = [lista_nomes[i], []] 
+    nomes_e_dados[1].append(lista_alturas[i])
+    nomes_e_dados[1].append(lista_pesos[i])
+    nomes_e_dados[1].append(lista_idades[i])
+    nomes_e_dados[1].append(imc_atual)
 
-time.append(nomes_e_dados)
-print(time[0])
+    imcs.append(imc_atual)
+    time.append(nomes_e_dados)
+print(f"Foram armazenados os dados de {len(time)} de jogadores.")
 
 # Referente a posição de GOLEIRO
 # ****** É necessário realizar os mesmo procedimentos para os goleiros!
 
 print(f"Foram calculados {len(imcs)} IMCs referente aos jogadores que atuam como {posicao}")
-print(f"O IMC médio dos jogadores que atuam como {posicao} é de __")
-# delta imc 
-# imc aceitável
-# altura média
-# h0 h1
 
+# Calculo do imc_medio (y)
+y = calc_imc_medio(imcs) 
+print(f"O IMC médio dos jogadores que atuam como {posicao} é de {y:.4f}.")
+# Variação de IMC's
+delta_y = delta_imc_medio(y)
+print(f"O valor da variação de IMCs é de {delta_y}")
+
+# CHAMAR a função que calcula imc aceitável
+# CHAMAR a função que calcula altura média
+
+# Critério para escolher o jogador
+# Calcular esse intervalo [h0, h1] e apontar qual jogador tá dentro desse intervalo
+# CHAMAR a função que calcula h0 h1
+# Possa ser que necessite chamar a matriz (abaixo) 
+
+# Para a montagem do time perfeito
+# se a altura H estiver dentro do intervalo [h0,h1]
+# time_perfeito.append(nome_e_dados[indice])
+time_perfeito = []
+
+# lendo a matriz
+# for linha in time:
+   
 # ------------------- 2
+# Método da Bisseção ou Newton 
