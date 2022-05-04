@@ -110,3 +110,24 @@ OBSERVAÇÕES DO PROFESSOR, NOVO OBJETIVO DO PROJETO
 . Artigos (verifique apenas os highlights) para o cálculo calórico. É necessário usar a equação de Cole por ser não linear. 
 Note que ela usa a idade. Se não tiver, tem que achar a idade média. 
 . Não resolvi. Tem que ver se vai dar certo.
+
+----------------------------------------------------------------------------------------
+# amazenamento = [
+#    lista [nome, []]
+#    lista [nome, []]
+#    lista [nome, []]
+#    lista [nome, []]
+# ]
+# h0 ?, k0 (k1), m_med, y (imc_med)
+# i[1][0]
+# Gustavo Oliveira11:48
+# return [h0, k 0]]
+# return h0,k0
+# return [h0, k 0]]
+# return h0,k0
+# fh = lambda h0: (...)
+# fk = lambda k0: (...)
+# Gustavo Oliveira11:49
+# h0 =  newton(fh,x0)
+# k0 = newton(fk,x0)
+# ([h0a,k0a],[h0d,k0d],[h0m,k0m])
