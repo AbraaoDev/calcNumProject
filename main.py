@@ -1,3 +1,4 @@
+from math import sqrt
 import matplotlib.pyplot as plt
 from numpy import log as ln
 
@@ -42,25 +43,34 @@ def delta_imc_medio(y):
 
 def imc_aceitavel(delta_y, y):
     # onde y corresponde ao valor obtido na função imc_medio
-    k0 = (1-delta_y)*y 
-    k1 = (1+delta_y)*y
+    k0 = (1 - delta_y) * y # imc minimo
+    k1 = (1 + delta_y) * y # imc máximo
 
-    # verifica se o imc está entre o intervalo: k0 <= y <= k1
-    if(k0 <= y and y <= k1):
-        print("IMC aceitável")
-        return y
-    else:
-        print("Fora do intervalo")
-        return 0
+    return k0, k1
 
 def calcular_altura_media(lista_alturas):
     h = sum(lista_alturas) / len(lista_alturas)
     return h
 
-def calc_h_min_h_max():
-    pass
+# parâmetros: altura média(h), delta_y(), imc_medio(y)
+def calc_h_min_h_max(h, delta_y, y):
+    m_barra = 25 * (h**2) 
+    k0 = (1 - delta_y) * y # imc minimo
+    k1 = (1 + delta_y) * y # imc máximo
+
+    h0 = sqrt(m_barra / k0) 
+    h1 = sqrt(m_barra / k1)
+
+    return h0, h1
+
 
 # ------------------------------------- ETAPA 2 (Cálculo da Taxa Metabólica Basal)
+def idade_adequada():
+    pass
+
+def f(x):
+    return 0
+
 def calc_tmb(idade, m, h):
     # equação proveniente do 'artigo 1' enviado pelo professor
     tmb = -0.1631 - 0.00255 * idade + 0.4721 * ln(m) + 0.2952 * ln(h)
@@ -79,15 +89,14 @@ while(posicao != "ATACANTE" or posicao != "DEFENSOR" or posicao != "MEIO-CAMPO")
 if (posicao == "ATACANTE"):
     print("Vamos montar o time perfeito de atacantes.")
     f  = open("json/atacantes.json")
-    data_list = json.load(f)
 elif (posicao == "DEFENSOR"):
     print("Vamos montar o time perfeito de defensores.")
     f = open("json/defensores.json")
-    data_list = json.load(f)
 else:
     print("Vamos montar o time perfeito de meio-campistas.")
     f = open("json/meiocampos.json")
-    data_list = json.load(f)
+
+data_list = json.load(f)
 
 # Abrindo o arquivo .json referente a posição de Goleiro
 f_goleiro = open("json/goleiros.json")
@@ -115,45 +124,50 @@ time = []
 # Referente a uma das posições informadas pelo usuário: ATACANTE, DEFENSOR e MEIO-CAMPO
 imcs = []
 for i in range(len(data_list)):
-    # 0 0 
     imc_atual = calc_imc(lista_pesos[i], lista_alturas[i])
-    nomes_e_dados = [lista_nomes[i], []] 
-    nomes_e_dados[1].append(lista_alturas[i])
-    nomes_e_dados[1].append(lista_pesos[i])
-    nomes_e_dados[1].append(lista_idades[i])
-    nomes_e_dados[1].append(imc_atual)
+    nomes_e_dados = [lista_nomes[i]] 
+    nomes_e_dados.append(lista_alturas[i])
+    nomes_e_dados.append(lista_pesos[i])
+    nomes_e_dados.append(lista_idades[i])
+    nomes_e_dados.append(imc_atual)
 
     imcs.append(imc_atual)
     time.append(nomes_e_dados)
+
 print(f"Foram armazenados os dados de {len(time)} de jogadores.")
-
-# Referente a posição de GOLEIRO
-# ****** É necessário realizar os mesmo procedimentos para os goleiros!
-
 print(f"Foram calculados {len(imcs)} IMCs referente aos jogadores que atuam como {posicao}")
 
 # Calculo do imc_medio (y)
 y = calc_imc_medio(imcs) 
 print(f"O IMC médio dos jogadores que atuam como {posicao} é de {y:.4f}.")
+
 # Variação de IMC's
 delta_y = delta_imc_medio(y)
 print(f"O valor da variação de IMCs é de {delta_y}")
 
-# CHAMAR a função que calcula imc aceitável
-# CHAMAR a função que calcula altura média
+# Intervalo de IMCs ceitáveis
+k0,k1 = imc_aceitavel(delta_y, y)
+print(f"O IMC mínimo é {k0:.4f} e o IMC máximo é {k1:.4f}")
+
+# Calcula a altura média (h)
+h = calcular_altura_media(lista_alturas)
+print(f"A altura média é de {h:.2f}.")
 
 # Critério para escolher o jogador
-# Calcular esse intervalo [h0, h1] e apontar qual jogador tá dentro desse intervalo
-# CHAMAR a função que calcula h0 h1
-# Possa ser que necessite chamar a matriz (abaixo) 
 
-# Para a montagem do time perfeito
-# se a altura H estiver dentro do intervalo [h0,h1]
-# time_perfeito.append(nome_e_dados[indice])
+h0, h1 = calc_h_min_h_max(h,delta_y,y)
+print(f"A altura mínima é de {h1:.2f}m e a altura máxima é de {h0:.2f}m.")
+
+# Selecionando jogadores com base na altura deles
 time_perfeito = []
+for dados in time:
+    # Verifica se a altura está dentro do intervalo
+    if dados[1] >= h1 and dados[1] <= h0:
+        time_perfeito.append(dados) # adiciona linha para a nova matriz
 
-# lendo a matriz
-# for linha in time:
-   
+print(len(time))
+print(len(time_perfeito))
+
+
 # ------------------- 2
 # Método da Bisseção ou Newton 
