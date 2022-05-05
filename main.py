@@ -139,8 +139,20 @@ print(f"O IMC médio dos jogadores que atuam como {posicao} é de {y:.4f}.")
 delta_y = delta_imc_medio(y)
 print(f"O valor da variação de IMCs é de {delta_y}")
 
-# CHAMAR a função que calcula imc aceitável
-# CHAMAR a função que calcula altura média
+y = calc_imc_medio(imcs)
+delta_y = delta_imc_medio(y)
+
+for i in range(len(data_list)):
+    temp_var = imc_aceitavel(delta_y, y)
+    if(temp_var == 0):
+        print("IMC fora da faixa aceitavel")
+nomes_e_dados.append(temp_var)
+
+altura_media = 0
+for i in range(len(data_list)):
+    altura_media = altura_media + lista_alturas[i]
+altura_media = altura_media / len(data_list)
+print("A altura media vale", {altura_media})
 
 # Critério para escolher o jogador
 # Calcular esse intervalo [h0, h1] e apontar qual jogador tá dentro desse intervalo

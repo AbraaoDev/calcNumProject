@@ -15,7 +15,6 @@ def Armazenar_em_lista(data_list):
     lista_pesos = [] #1
     lista_idades = [] #2
     lista_nomes = [] #3
-    lista_imc_aceitavel = [] #4
 
 	#Dentro desse for, ele estará verificando se a chave equivale a determinada propriedade do jogador
 	# se sim, insere no final da lista o valor
@@ -29,8 +28,6 @@ def Armazenar_em_lista(data_list):
                 lista_idades.append(value)
             elif key == 'NOME':
                 lista_nomes.append(value)
-            elif key == 'IMC_ACEITAVEL':
-                lista_imc_aceitavel.append(value)
     return lista_alturas, lista_pesos, lista_idades, lista_nomes
 
 # -----------------------------------------------------------
