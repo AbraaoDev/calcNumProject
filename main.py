@@ -91,7 +91,7 @@ def newton(hx, h, kx, y, y_max, delta_y, tol, N, plotar):
 
     for i in range(N):
         h_x = hx - f(hx)/dnf(hx)
-        e = abs(h_x-hx)/abs(h_x) # erro
+        e = abs(h_x-hx)/abs(h_x)
        
         if (e < tol):  # Se o erro for menor que a tolerência, para a execução
             break
@@ -112,10 +112,6 @@ def calc_tmb(h, m, idade):
     tmb = -0.1631 - 0.00255 * idade + 0.4721 * ln(m) + 0.2952 * ln(h)
     tmb = round(tmb,4)
     return tmb
-
-# para montar o time, são escolhidos 10 jogadores + 1 goleiro
-def montar_time():
-    pass
 
 posicao = ""
 while(posicao != "ATACANTE" or posicao != "DEFENSOR" or posicao != "MEIO-CAMPO"):
