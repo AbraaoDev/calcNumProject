@@ -64,7 +64,7 @@ def listar_all():
     json_obj_goleiro = json.loads(json_str_goleiro)
     json_obj_goleiro = json.dumps(json_obj_goleiro)
     with open("../json/goleiros.json", "w") as outfile:
-        outfile.write(json_obj_meiocampo)
+        outfile.write(json_obj_goleiro)
 
     json_str = df.to_json(orient='records') # ordena o dataframe por linhas
     json_obj = json.loads(json_str) # Passa uma string JSON válida e converte para um dicionário Python
