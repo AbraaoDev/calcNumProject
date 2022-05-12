@@ -77,8 +77,10 @@ def calcular_massa_media(lista_pesos):
     return m
 
 # Calcula o altura mínima por meio do método de Newton-Raphson
-# Recebe como parâmetros: o chute de altura mínima, a altura médica, a tolerância, 
-# o número de iterações e um valor booleano para a plotagem do gráfico
+# Recebe como parâmetros:
+    # O chute de h0 ou h1, o IMC k0 ou k1,
+    # o IMC médio(removido das funções lambda), o IMC maximo, 
+    # a tolerancia, nº de iterações e um valor booleano para plotagem
 def newton(hx, h, kx, y, y_max, delta_y, tol, N, plotar):
     # print(f"Estimativa inicial: {hx} m.") 
 
@@ -90,15 +92,12 @@ def newton(hx, h, kx, y, y_max, delta_y, tol, N, plotar):
     for i in range(N):
         h_x = hx - f(hx)/dnf(hx)
         e = abs(h_x-hx)/abs(h_x) # erro
-
-        # Se o erro for menor que a tolerência, para a execução
-        if (e < tol):
+       
+        if (e < tol):  # Se o erro for menor que a tolerência, para a execução
             break
         hx = h_x
     if i == N:
         print("Solução não obtida")
-    # else:
-        # print(f"Solução obtida: resultado = {h_x} m.")
     
     if plotar:
         delta = 3*h_x
