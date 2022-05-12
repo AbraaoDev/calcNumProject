@@ -1,6 +1,8 @@
 from math import sqrt
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import plot
 from numpy import log as ln
+from numpy import linspace
+
 import random
 
 import json
@@ -42,11 +44,15 @@ def calc_imc_medio(lista_imcs):
     y = sum(lista_imcs) / len(lista_imcs)
     return y
 
+def calc_imc_max(lista_imcs):
+    y_max = max(lista_imcs)
+    return y_max
+
 # Recebe a média do IMC de todos os jogadores
 # Retorna a média do IMC subtraido ao valor máximo de imc 
 # aceitavel dividido pelo proprio valor maximo
-def delta_imc_medio(y):
-    delta_y = abs(25 - y) / y
+def delta_imc_medio(y, y_max):
+    delta_y = abs(y_max - y) / y_max
     return delta_y
 
 # Recebe o valor função inserida nas notas de aula que tem a função de 
@@ -66,17 +72,40 @@ def calcular_altura_media(lista_alturas):
     h = sum(lista_alturas) / len(lista_alturas)
     return h
 
-# ? Necessita revisar e aplicar um dos métodos numéricos
-# parâmetros: altura média(h), delta_y(), imc_medio(y)
-def calc_h_min_h_max(h, delta_y, y):
-    m_barra = 25 * (h**2) 
-    k0 = (1 - delta_y) * y # imc minimo
-    k1 = (1 + delta_y) * y # imc máximo
+def calcular_massa_media(lista_pesos):
+    m = sum(lista_pesos) / len(lista_pesos)
+    return m
 
-    h0 = sqrt(m_barra / k0) 
-    h1 = sqrt(m_barra / k1)
+# Calcula o altura mínima por meio do método de Newton-Raphson
+# Recebe como parâmetros: o chute de altura mínima, a altura médica, a tolerância, 
+# o número de iterações e um valor booleano para a plotagem do gráfico
+def newton(hx, h, kx, y, y_max, delta_y, tol, N, plotar):
+    # print(f"Estimativa inicial: {hx} m.") 
 
-    return h0, h1
+    q = 1e-6 
+    
+    f = lambda hx: ((y_max-delta_y)*h / ((abs(h - hx)) ** 2)) -  (kx) # função 
+    dnf = lambda hx: (f(hx + q) - f(hx)) / q # derivada numérica da função
+
+    for i in range(N):
+        h_x = hx - f(hx)/dnf(hx)
+        e = abs(h_x-hx)/abs(h_x) # erro
+
+        # Se o erro for menor que a tolerência, para a execução
+        if (e < tol):
+            break
+        hx = h_x
+    if i == N:
+        print("Solução não obtida")
+    # else:
+        # print(f"Solução obtida: resultado = {h_x} m.")
+    
+    if plotar:
+        delta = 3*h_x
+        dom = linspace(h_x-delta, h_x+delta, 30)
+        plot(dom, f(dom), h_x, f(h_x), 'ro')
+    
+    return round(abs(h_x),3) # arredonda em 3 casas decimais
 
 # ------------------------------------- ETAPA 2 (Cálculo da Taxa Metabólica Basal)
 def calc_tmb(h, m, idade):
@@ -162,53 +191,71 @@ for i in range(len(data_list_goleiros)):
     goleiros.append(nomes_e_dados_g)
 
 print(f"Foram armazenados os dados de {len(time)} de {posicao}.")
-print(f"Foram armazenados os dados de {len(goleiros)} de GOLEIROS.")
+print(f"Foram armazenados os dados de {len(goleiros)} de GOLEIROS.\n")
 
 # Calculo do imc_medio (y)
 y = calc_imc_medio(imcs) 
 y_g = calc_imc_medio(imcs_g)
 print(f"O IMC médio dos {posicao} é de {y:.4f}.")
-print(f"O IMC médio dos dos GOLEIROS  é de {y:.4f}.")
+print(f"O IMC médio dos dos GOLEIROS  é de {y:.4f}.\n")
+
+# Calculando o imc_max (y_max)
+y_max = calc_imc_max(imcs)
+y_max_g = calc_imc_max(imcs_g)
+print(f"O IMC máximo dos {posicao} é de {y_max:.4f}.")
+print(f"O IMC máximo dos GOLEIROS  é de {y_max_g:.4f}.\n")
 
 # Variação de IMC's
-delta_y = delta_imc_medio(y)
-delta_y_g = delta_imc_medio(y_g)
+delta_y = delta_imc_medio(y, y_max)
+delta_y_g = delta_imc_medio(y_g, y_max_g)
 print(f"O valor da variação de IMCs dos {posicao} é de {delta_y}.")
-print(f"O valor da variação de IMCs dos GOELIROS é de {delta_y_g}.")
+print(f"O valor da variação de IMCs dos GOLEIROS é de {delta_y_g}.\n")
 
 # Intervalo de IMCs ceitáveis
 k0,k1 = imc_aceitavel(delta_y, y)
 k0_g,k1_g = imc_aceitavel(delta_y_g, y_g)
 print(f"O IMC mínimo e maximo dos {posicao} é: {k0:.4f} e {k1:.4f}.")
-print(f"O IMC mínimo e maximo dos GOLEIROS é: {k0_g:.4f} e {k1_g:.4f}.")
+print(f"O IMC mínimo e maximo dos GOLEIROS é: {k0_g:.4f} e {k1_g:.4f}\n.")
 
 # Calcula a altura média (h)
 h = calcular_altura_media(lista_alturas)
 h_g = calcular_altura_media(lista_alturas_g)
 print(f"A altura média dos {posicao} é: {h:.2f}m.")
-print(f"A altura média dos GOLEIROS é: {h_g:.2f}m.")
+print(f"A altura média dos GOLEIROS é: {h_g:.2f}m.\n")
+
+# m = calcular_massa_media(lista_pesos)
+# print(f"A massa media {m} kg.")
 
 # Critério para escolher o jogador
+# Calculando a altura mínima, chute: 1.60m
+h0 = newton(1.6, h, k0, y, y_max, delta_y, 1e-3, 50, False)
+h0 = h - h0
+h1 = newton(2.1, h, k1, y, y_max, delta_y, 1e-3, 50, False)
+h1 = h1 - (h * 0.7)
+print(f"A altura mínima dos {posicao} é de: {h0:.2f} m.")
+print(f"A altura maxima dos {posicao} é de: {h1:.2f} m.\n")
 
-h0, h1 = calc_h_min_h_max(h,delta_y,y)
-h0_g, h1_g = calc_h_min_h_max(h_g,delta_y_g,y_g)
-print(f"A altura mínima e máxima dos {posicao} é: {h1:.2f}m e {h0:.2f}m.")
-print(f"A altura mínima e máxima dos GOLEIROS é: {h1_g:.2f}m e {h0_g:.2f}m.")
+h0_g = newton(1.6, h_g, k0_g, y_g, y_max_g, delta_y_g, 1e-3, 50, False)
+h0_g = abs(h0_g-h_g)
+h1_g = newton(2.1, h_g, k1_g, y_g, y_max_g, delta_y_g, 1e-3, 50, False)
+h1_g = h1_g - (h_g * 0.7)
+print(f"A altura mínima dos GOLEIROS é de: {h0_g:.2f} m.")
+print(f"A altura maxima dos GOLEIROS é de: {h1_g:.2f} m.\n")
 
 # Selecionando jogadores com base na altura deles
 sub_time = []
 sub_goleiros = []
 for dados in time:
     # Verifica se a altura está dentro do intervalo
-    if dados[1] >= h1 and dados[1] <= h0:
+    if dados[1] >= h0 and dados[1] <= h1:
         sub_time.append(dados) # adiciona linha para a nova matriz
 
 for dados_g in goleiros:
-    if dados_g[1] >= h1_g and dados_g[1] <= h0:
+    if dados_g[1] >= h0_g and dados_g[1] <= h1_g:
         sub_goleiros.append(dados_g)
 
 print(f"Foram subselecionados {len(sub_time)}/{len(time)} {posicao}")
-print(f"Foram subselecionados {len(sub_goleiros)}/{len(goleiros)} GOLEIROS.")
+print(f"Foram subselecionados {len(sub_goleiros)}/{len(goleiros)} GOLEIROS.\n")
 
 # ------------------- 2
 # Calculando a taxa metabólica basal de todos os jogadores
